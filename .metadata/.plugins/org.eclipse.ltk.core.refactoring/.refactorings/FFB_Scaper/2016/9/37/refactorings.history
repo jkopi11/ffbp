@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">&#x0A;<refactoring comment="Rename resource &apos;FFB_Scaper/chrome-int/popup.js&apos; to &apos;projections.js&apos;" description="Rename resource &apos;popup.js&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="chrome-int/popup.js" name="projections.js" stamp="1473006057455" updateReferences="true"/>&#x0A;<refactoring comment="Rename resource &apos;FFB_Scaper/chrome-int/popup.html&apos; to &apos;projections.html&apos;" description="Rename resource &apos;popup.html&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="chrome-int/popup.html" name="projections.html" stamp="1473006074734" updateReferences="true"/>
+</session>

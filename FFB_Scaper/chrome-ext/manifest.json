@@ -1,0 +1,13 @@
+{
+  "name": "FFB Scraper",
+  "description": "FFB Scraper",
+  "version": "0.1",
+  "manifest_version": 2,
+  "permissions": [
+    "activeTab"
+  ],
+  "browser_action": {
+    "default_icon": "football.png",
+    "default_popup": "popup.html"
+  }
+}

@@ -1,0 +1,58 @@
+package com.kffb.analyzer.api;
+
+import java.io.IOException;
+
+import javax.naming.Context; 
+import javax.naming.InitialContext;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.sql.Connection;
+
+/**
+ * Servlet implementation class LoadProjections
+ */
+@WebServlet(description = "API - Load Projections", urlPatterns = "/api/loadprojections")
+public class LoadProjections extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public LoadProjections() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Connection conn = null;
+		try {
+			Context initContext = new InitialContext();
+			DataSource ds   = (DataSource)initContext.lookup("jdbc/db");
+			conn = ds.getConnection();
+			
+			JSONArray projections = new JSONArray(request.getParameter("projections"));
+			JSONObject proj = new JSONObject(projections.getString(0));
+			System.out.println(proj.getString("NAME"));
+			//use conn
+			conn.close();
+		} catch (JSONException je) {
+			je.printStackTrace();
+			//use conn
+			conn.close();
+		}
+		
+	}
+
+}

@@ -1,0 +1,19 @@
+package com.kffb.analyzer;
+
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+
+@WebServlet({ "/LoadProjectServlet", "/loadProjection" })
+public class LoadProjectionServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	public LoadProjectionServlet() {
+		super();
+	}
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+	}
+
+}

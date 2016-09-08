@@ -1,0 +1,11 @@
+package com.kffb.analyzer;
+
+import javax.servlet.http.HttpServlet;
+
+public class LoadProjectionServlet extends HttpServlet {
+
+	public LoadProjectionServlet() {
+		// TODO Auto-generated constructor stub
+	}
+
+}
