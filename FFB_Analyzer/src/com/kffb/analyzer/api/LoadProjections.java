@@ -24,7 +24,6 @@ import java.sql.SQLException;
  * Servlet implementation class LoadProjections
  */
 @WebServlet(description = "API - Load Projections", urlPatterns = "/api/loadprojections")
-
 public class LoadProjections extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
@@ -37,7 +36,6 @@ public class LoadProjections extends HttpServlet {
      */
     public LoadProjections() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -48,47 +46,56 @@ public class LoadProjections extends HttpServlet {
 		try {
 			conn = ds.getConnection();
 			conn.setAutoCommit(false);
-			PreparedStatement projPS = conn.prepareStatement("REPLACE INTO projections (P_ID,WEEK,ESPN_ID,ESPN_PROJ) VALUES (?, ?, ?, ?)");
-			PreparedStatement playerPS = conn.prepareStatement("REPLACE INTO players (P_ID, PNAME) VALUES (?, ?)"); 
+			String site = request.getParameter("site");
+			String scoreType = request.getParameter("scoreType");
+			// P_ID, PNAME, SITE_ID, SCORE_TYPE, WEEK, SCORE, 
+			PreparedStatement projPS = conn.prepareStatement("CALL updatePlayers(?, ?, ?, ?, ?, ?)");
+			 
 			
 			JSONArray projections = new JSONArray(request.getParameter("projections"));
 			JSONObject proj;
 			for (int i = 0; i < projections.length(); i++) {
 				proj = new JSONObject(projections.getString(i));
+				int pID = proj.getInt(site);
+				if (pID == 0) {
+					continue;
+				}
 				// set ID
-				projPS.setInt(1, proj.getInt("ESPNID"));
-				playerPS.setInt(1, proj.getInt("ESPNID"));
-				
-				// set Week
-				projPS.setInt(2, Integer.valueOf(request.getParameter("week")));
-				
-				// set ESPN ID
-				projPS.setInt(3, proj.getInt("ESPNID"));
-				
-				// set ESPN Proj
-				projPS.setInt(4, proj.getInt("PROJ"));
-				
+				projPS.setInt(1, pID);
+
 				// set Player Name
-				playerPS.setString(2, proj.getString("NAME"));
+				projPS.setString(2, proj.getString("NAME"));
+			
+				// set SITE ID
+				projPS.setString(3, site);
+				
+				projPS.setString(4, scoreType);
+
+				// set Week
+				projPS.setInt(5, Integer.valueOf(request.getParameter("week")));
+							
+				// set ESPN Proj
+				projPS.setInt(6, proj.getInt(scoreType));
+
 				projPS.addBatch();
-				playerPS.addBatch();
-				System.out.println(proj.getString("NAME"));
+				System.out.println("CALL updatePlayers("+pID+","+proj.getString("NAME")+","+site+","+scoreType+","+Integer.valueOf(request.getParameter("week"))+","+proj.getInt(scoreType)+");");
 			}
 			int [] projRows = projPS.executeBatch();
-			int [] playerRows = playerPS.executeBatch();
 			
 			System.out.println("Proj Rows : " + projRows.toString());
-			System.out.println("Player rows : " + playerRows.toString());
 			
 			response.setContentType("application/json");
 			PrintWriter out = response.getWriter();
 			JSONObject jsonResponse = new JSONObject("{success : true}");
-			jsonResponse.append("projrows", projRows.toString());
-			jsonResponse.append("playerrows", playerRows.toString());
+			int totalUpdates = 0;
+			for (int i = 0; i < projRows.length; i++) {
+				totalUpdates += projRows[i];
+			}
+			jsonResponse.append("projrows", totalUpdates);
 			out.print(jsonResponse);
 			out.flush();
 			//use conn
-			conn.commit();
+//			conn.commit();
 			conn.close();
 		} catch (JSONException je) {
 			je.printStackTrace();

@@ -16,15 +16,12 @@ function parseESPN () {
 		row = player.querySelectorAll('td');
 		slot = row[columns.indexOf('SLOT')];
 		if (typeof slot != 'undefined') {
-//			playerObj.push(slot.innerHTML);
 			playerObj['SLOT'] = slot.innerHTML;
-//			markup += slot.innerHTML + ' ';
 		}
 		playerName = row[columns.indexOf('PLAYER, TEAM POS')]; 
 		if (typeof playerName != "undefined") {
 			playerName = playerName.querySelector('a');
 			if (playerName) {
-//				playerObj.push(playerName.getAttribute('playerid'));
 				playerObj['ESPNID'] = playerName.getAttribute('playerid');
 				
 				playerObj['NAME'] = playerName.innerHTML;

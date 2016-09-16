@@ -1,7 +1,0 @@
-package com.kffb.analyzer;
-
-import javax.servlet.http.HttpServlet;
-
-public class LoadProjection extends HttpServlet {
-
-}

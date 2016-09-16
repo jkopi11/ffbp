@@ -7,7 +7,7 @@ function parseYahoo () {
     markup = '',
     playerObj, player, row, data,slot,playerName,projection,projNum,url;
 	
-	headerRow = headerRow[1].querySelectorAll('td');
+	headerRow = headerRow[1].querySelectorAll('th');
 	
 	for (var i = 0; i < headerRow.length; i++) {
 		columns.push(headerRow[i].innerText.trim());    
@@ -22,8 +22,9 @@ function parseYahoo () {
 			playerName = playerName.querySelector('a.name');
 			if (playerName) {
 				url = playerName.href;
+				console.log(playerName.href,playerName.innerHTML);
 				playerObj['Y_ID'] = parseInt(url.substring(url.lastIndexOf('/')+1));
-				playerObj['NAME'] = playerName.innerHTML;
+				playerObj['NAME'] = playerName.innerHTML.replace("'","");
 			}
 		} else {
 			continue;
@@ -32,10 +33,11 @@ function parseYahoo () {
 		projection = row[columns.indexOf('Fan Pts')]; 
 		if (typeof projection !== "undefined") {
 			projNum = parseInt(projection.innerText.trim());
+			console.log(projNum);
 			if (projNum == null || typeof projNum === 'undefined' || isNaN(projNum)) {
 				projNum = 0;
 			}
-			playerObj['PROJ'] = projNum; 
+			playerObj['Y_PROJ'] = projNum; 
 		} else {
 			continue;
 		}

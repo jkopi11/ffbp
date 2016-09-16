@@ -24,7 +24,7 @@ function parseESPN () {
 		if (typeof playerName !== "undefined") {
 			playerName = playerName.querySelector('a');
 			if (playerName) {
-				playerObj['ESPNID'] = parseInt(playerName.getAttribute('playerid'));
+				playerObj['ESPN_ID'] = parseInt(playerName.getAttribute('playerid'));
 				playerObj['NAME'] = playerName.innerHTML;
 			}
 		} else {
@@ -37,7 +37,7 @@ function parseESPN () {
 			if (projNum == null || typeof projNum === 'undefined' || isNaN(projNum)) {
 				projNum = 0;
 			}
-			playerObj['PROJ'] = projNum; 
+			playerObj['ESPN_PROJ'] = projNum; 
 		} else {
 			continue;
 		}
