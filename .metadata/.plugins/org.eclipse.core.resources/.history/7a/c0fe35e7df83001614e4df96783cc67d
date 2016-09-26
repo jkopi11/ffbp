@@ -5,6 +5,7 @@ function parseESPN () {
     playerRows = document.querySelectorAll(".pncPlayerRow"),
     columns = [],
     markup = '',
+    players = [],
     playerObj, player, row, data,slot,playerName,projection;
 
 	for (var i = 0; i < headerRow.length; i++) {
@@ -14,7 +15,7 @@ function parseESPN () {
 		player = playerRows[ii];
 		playerObj = {};
 		row = player.querySelectorAll('td');
-		playerName = row[columns.indexOf('PLAYER, TEAM POS')];
+		playerName = row[columns.indexOf('PLAYER, TEAM POS')]; 
 		if (typeof playerName != "undefined") {
 			playerName = playerName.querySelector('a');
 			if (playerName) {
@@ -26,5 +27,4 @@ function parseESPN () {
 
 parseESPN();
 
-// Chrome plugins pass the last variable reference in a script
 players

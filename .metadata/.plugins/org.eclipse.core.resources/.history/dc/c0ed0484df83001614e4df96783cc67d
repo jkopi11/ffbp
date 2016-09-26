@@ -1,7 +1,6 @@
 package com.kffb.analyzer.api;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -64,9 +63,7 @@ public class SaveLineup extends HttpServlet {
 			
 			JSONArray players = new JSONArray(request.getParameter("players"));
 			// 1-user id, 2-lineupid (may be null), 3-playerid (using the site id)
-			PreparedStatement updatePS = conn.prepareStatement("CALL updateLineup(?, ?, ?, ?)");
-			
-			String siteName = request.getParameter("site");
+			PreparedStatement updatePS = conn.prepareStatement("CALL updateLineup(?, ?, ?)");
 			
 			for (int i = 0; i < players.length(); i++) {
 				// set ID
@@ -78,26 +75,9 @@ public class SaveLineup extends HttpServlet {
 				// set player ID
 				updatePS.setInt(3, players.getInt(i));
 				
-				updatePS.setString(4, siteName);
-				
-				updatePS.addBatch();
-				
-				System.out.println("CALL updateLineup("+userId+","+lineupId+","+players.getInt(i)+","+siteName+");");
+				System.out.println("CALL updateLineup("+userId+","+lineupId+","+players.getInt(i)+","+request.getParameter("siteName")+");");
 			}
 			int [] projRows = updatePS.executeBatch();
-			response.setContentType("application/json");
-			PrintWriter out = response.getWriter();
-			JSONObject jsonResponse = new JSONObject("{success : true}");
-			int totalUpdates = 0;
-			for (int i = 0; i < projRows.length; i++) {
-				totalUpdates += projRows[i];
-			}
-			jsonResponse.append("projrows", totalUpdates);
-			out.print(jsonResponse);
-			out.flush();
-			//use conn
-			conn.commit();
-			conn.close();
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

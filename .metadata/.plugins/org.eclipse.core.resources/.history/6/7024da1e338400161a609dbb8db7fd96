@@ -82,7 +82,7 @@ public class SaveLineup extends HttpServlet {
 				
 				updatePS.addBatch();
 				
-				System.out.println("CALL updateLineup("+userId+","+lineupId+","+players.getInt(i)+","+siteName+");");
+				System.out.println("CALL updateLineup("+userId+","+lineupId+","+players.getInt(i)+","+siteName+";");
 			}
 			int [] projRows = updatePS.executeBatch();
 			response.setContentType("application/json");

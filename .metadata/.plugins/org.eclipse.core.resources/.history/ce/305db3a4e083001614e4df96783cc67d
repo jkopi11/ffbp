@@ -3,7 +3,7 @@ var tab, siteName,
 	getRosterBtn = document.getElementById("getRosterBtn"),
 	saveTeam = function (players){
 		currentPlayers = players[0];
-		console.log(currentPlayers);
+		debugger;
 		$.post( "http://localhost:8080/FFB_Analyzer/api/savelineup", {
 			site : siteName,
 			userId : 0,

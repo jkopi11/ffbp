@@ -97,6 +97,7 @@ public class LoadProjections extends HttpServlet {
 			conn.commit();
 			conn.close();
 		} catch (JSONException je) {
+			conn.close();
 			je.printStackTrace();
 		} catch (SQLException se) {
 			se.printStackTrace();

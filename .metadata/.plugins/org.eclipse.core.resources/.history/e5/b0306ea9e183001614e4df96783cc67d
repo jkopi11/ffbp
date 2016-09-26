@@ -83,6 +83,8 @@ public class LoadProjections extends HttpServlet {
 		
 			int [] projRows = projPS.executeBatch();
 			
+			System.out.println("Proj Rows : " + projRows.toString());
+			
 			response.setContentType("application/json");
 			PrintWriter out = response.getWriter();
 			JSONObject jsonResponse = new JSONObject("{success : true}");

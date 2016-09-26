@@ -5,6 +5,7 @@ function parseESPN () {
     playerRows = document.querySelectorAll(".pncPlayerRow"),
     columns = [],
     markup = '',
+    players = [],
     playerObj, player, row, data,slot,playerName,projection;
 
 	for (var i = 0; i < headerRow.length; i++) {
