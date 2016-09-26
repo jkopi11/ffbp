@@ -15,4 +15,6 @@
 <fullyQualifiedTypeName name="java.io.PrintWriter"/>
 <fullyQualifiedTypeName name="javax.annotation.Resource"/>
 <fullyQualifiedTypeName name="org.json.JSONArray"/>
+<fullyQualifiedTypeName name="com.mysql.jdbc.Statement"/>
+<fullyQualifiedTypeName name="java.sql.ResultSet"/>
 </qualifiedTypeNameHistroy>

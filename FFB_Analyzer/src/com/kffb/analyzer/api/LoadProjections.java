@@ -78,8 +78,9 @@ public class LoadProjections extends HttpServlet {
 				projPS.setInt(6, proj.getInt(scoreType));
 
 				projPS.addBatch();
-				System.out.println("CALL updatePlayers("+pID+","+proj.getString("NAME")+","+site+","+scoreType+","+Integer.valueOf(request.getParameter("week"))+","+proj.getInt(scoreType)+");");
+				System.out.println("CALL updatePlayers("+pID+",'"+proj.getString("NAME")+"','"+site+"','"+scoreType+"',"+Integer.valueOf(request.getParameter("week"))+","+proj.getInt(scoreType)+");");
 			}
+		
 			int [] projRows = projPS.executeBatch();
 			
 			System.out.println("Proj Rows : " + projRows.toString());
@@ -95,7 +96,7 @@ public class LoadProjections extends HttpServlet {
 			out.print(jsonResponse);
 			out.flush();
 			//use conn
-//			conn.commit();
+			conn.commit();
 			conn.close();
 		} catch (JSONException je) {
 			je.printStackTrace();
