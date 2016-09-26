@@ -1,16 +1,8 @@
 var players = [];
 
 function parseESPN () {
-	var headerRow = document.querySelectorAll('.playerTableBgRowSubhead td'),
-    playerRows = document.querySelectorAll(".pncPlayerRow"),
-    columns = [],
-    markup = '',
-    players = [],
-    playerObj, player, row, data,slot,playerName,projection;
-
-	for (var i = 0; i < headerRow.length; i++) {
-	    columns.push(headerRow[i].innerHTML);
-	}
+	var playerRows = document.querySelectorAll(".pncPlayerRow"),
+    playerObj, player, row,playerName;
 	for (var ii = 0; ii < playerRows.length; ii++) {
 		player = playerRows[ii];
 		playerObj = {};

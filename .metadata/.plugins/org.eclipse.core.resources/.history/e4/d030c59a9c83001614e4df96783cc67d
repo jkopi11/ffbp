@@ -13,6 +13,9 @@ var tab, siteName,
 		chrome.tabs.executeScript(tab.id, {
 			  file : 'espn_ffb.js'
 		  }, saveTeam);
+	},
+	saveRoster = function(){
+		
 	};
 	
 

@@ -49,16 +49,16 @@ public class SaveLineup extends HttpServlet {
 		try {
 			Connection conn = ds.getConnection();
 			conn.setAutoCommit(false);
-			int userId = Integer.valueOf(request.getParameter("userId"));
+			int userId = Integer.valueOf(request.getParameter("userID"));
 			
 			Statement stmt = (Statement) conn.createStatement();
 			String query;
 			int lineupId;
-			if (request.getParameter("lineupId") == null) {
+			if (request.getParameter("lineupID") == null) {
 				query = String.format("INSERT INTO lineups (USER_ID) VALUES (%1$d);",userId);
 				lineupId = stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 			} else {
-				lineupId = Integer.valueOf(request.getParameter("lineupId"));
+				lineupId = Integer.valueOf(request.getParameter("LINEUP_ID"));
 				query = String.format("UPDATE lineup_players SET ACTIVE=false WHERE LP_ID=%1$d;", lineupId);
 				stmt.executeQuery(query);
 			}
@@ -67,7 +67,9 @@ public class SaveLineup extends HttpServlet {
 			// 1-user id, 2-lineupid (may be null), 3-playerid (using the site id)
 			PreparedStatement updatePS = conn.prepareStatement("CALL updateLineup(?, ?, ?)");
 			
+			JSONObject player;
 			for (int i = 0; i < players.length(); i++) {
+				player = players.getJSONObject(i);
 				// set ID
 				updatePS.setInt(1, userId);
 

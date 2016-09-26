@@ -1,20 +1,23 @@
-var tab, siteName,
+var tab, 
 	tab_title = '',
 	getRosterBtn = document.getElementById("getRosterBtn"),
-	saveTeam = function (players){
-		currentPlayers = players[0];
-		$.post( "http://localhost:8080/FFB_Analyzer/api/savelineup", {
-			site : siteName,
-			userId : 0,
-			players : JSON.stringify(currentPlayers)
-		});
+	displayTeam = function (players){
+		console.log(players);
+		var markup = '<table><tr><th>NAME</th><th>PROJ</th></tr>',
+			players = players[0],
+			player;
+		for (var i = 0; i < players.length; i++) {
+			player = players[i];
+			markup += '<tr><td>' + player.NAME + '</td><td>' + player.PROJ + '</td></tr>';
+		}
+		markup += '</table>';
+		document.querySelector("#id1").innerHTML = "<p>tab title: " + tab_title + "</p>" + markup;
 	},
 	getRosterFnc = function(){
 		chrome.tabs.executeScript(tab.id, {
 			  file : 'espn_ffb.js'
-		  }, saveTeam);
+		  }, displayTeam);
 	};
-	
 
 chrome.tabs.query({active: true}, function(tabs) {
 	tab = tabs[0];
@@ -23,7 +26,6 @@ chrome.tabs.query({active: true}, function(tabs) {
 		url = tab.url;
 	
 	if (espnHttpRgx.test(url)) {
-		siteName = 'ESPN';
 		getRosterBtn.addEventListener('click',getRosterFnc);
 	} else {
 		getRosterBtn.className += " disabled";

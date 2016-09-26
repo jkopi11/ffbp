@@ -2,7 +2,6 @@
 <html style="min-width:300px;min-height:300px;">
   <head>
   </head>
-  <script type="text/javascript" src="jquery-3.1.0.min.js"></script>
   <body>
   	<div class="container">
   		<button class="btn btn-lg btn-primary btn-block" id="getRosterBtn">Get Roster</button>

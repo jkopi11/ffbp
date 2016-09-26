@@ -27,6 +27,7 @@ var tab, currentPlayers, siteName, siteScoreFldName, fileName = 'espn_ffb.js', w
 		  }, displayTeam);
 	},
 	loadRosterFnc = function(){
+		console.log('load roster');
 		$.post( "http://localhost:8080/FFB_Analyzer/api/loadprojections", {
 			site : siteName,
 			week : $("#weekSelection option:selected").text(),
