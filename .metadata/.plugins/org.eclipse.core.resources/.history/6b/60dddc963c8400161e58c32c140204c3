@@ -1,0 +1,35 @@
+var players = [];
+
+function parseYahoo () {
+	var headerRow = document.querySelectorAll('table.ysf-rosterswapper thead tr.Last th'),
+    playerRows = document.querySelectorAll('table.ysf-rosterswapper tbody tr'),
+    columns = [],
+    markup = '',
+    playerObj, player, row, data,slot,playerName,projection,projNum,url;
+	
+	headerRow = headerRow[1].querySelectorAll('th');
+	
+	for (var i = 0; i < headerRow.length; i++) {
+		columns.push(headerRow[i].innerText.trim());    
+	}
+	
+	for (var ii = 0; ii < playerRows.length; ii++) {
+		player = playerRows[ii];
+		playerObj = {};
+		row = player.querySelectorAll('td');
+		playerName = row[columns.indexOf('Offense')]; 
+		if (typeof playerName !== "undefined") {
+			playerName = playerName.querySelector('a.name');
+			if (playerName) {
+				url = playerName.href;
+				players.push(parseInt(url.substring(url.lastIndexOf('/')+1)));
+			}
+		} else {
+			continue;
+		}
+	}
+}
+
+parseYahoo();
+
+players

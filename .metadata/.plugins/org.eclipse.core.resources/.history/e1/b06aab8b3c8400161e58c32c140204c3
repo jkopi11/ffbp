@@ -1,0 +1,31 @@
+var players = [];
+
+function parseYahoo () {
+	var headerRow = document.querySelectorAll('table.ysf-rosterswapper thead tr.Last th'),
+    playerRows = document.querySelectorAll("table.ysf-rosterswapper tbody tr"),
+    columns = [],
+    markup = '',
+    playerObj, player, row, data,slot,playerName,projection;
+
+	for (var i = 0; i < headerRow.length; i++) {
+	    columns.push(headerRow[i].innerHTML);
+	}
+	console.log(columns);
+	for (var ii = 0; ii < playerRows.length; ii++) {
+		player = playerRows[ii];
+		playerObj = {};
+		row = player.querySelectorAll('td');
+		playerName = row[columns.indexOf('PLAYER, TEAM POS')];
+		if (typeof playerName != "undefined") {
+			playerName = playerName.querySelector('a');
+			if (playerName) {
+				players.push(playerName.getAttribute('playerid'));
+			}
+		}
+	}
+}
+
+parseYahoo();
+
+// Chrome plugins pass the last variable reference in a script
+players

@@ -42,18 +42,15 @@ chrome.tabs.query({active: true}, function(tabs) {
 	    yahooHttpRgx = /^(http|https):\/\/football\.fantasysports\.yahoo\.com\/f1\/([0-9]{6,7})\/players/,
 		url = tab.url;
 	
-	siteName = espnHttpRgx.test(url) ? 'ESPN_ID' : null;
-	
-	if (siteName == 'ESPN_ID') {
+	if (espnHttpRgx.test(url)) {
+		siteName = 'ESPN_ID';
 		siteScoreFldName = 'ESPN_PROJ';
-	}
-	
-	if (siteName == null) {
-		siteName = yahooHttpRgx.test(url) ? 'Y_ID' : null;
+	} else if (yahooHttpRgx.test(url)){
+		siteName = 'Y_ID';
 		siteScoreFldName = 'Y_PROJ';
 	}
 	
-	if (siteName !== 'undefined') {
+	if (siteName && typeof siteName !== 'undefined') {
 		getRosterBtn.addEventListener('click',getRosterFnc);
 	} else {
 		getRosterBtn.className = disabledBtnCls;		
