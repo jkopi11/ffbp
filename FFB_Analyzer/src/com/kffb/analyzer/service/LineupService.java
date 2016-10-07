@@ -1,0 +1,51 @@
+package com.kffb.analyzer.service;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+
+import com.kffb.analyzer.dto.Lineup;
+
+public class LineupService {
+
+	public LineupService() {
+		// TODO Auto-generated constructor stub
+		
+	}
+	
+	public ArrayList<Lineup> getLineups (int userId) {
+		Connection conn;
+		ArrayList<Lineup> rows = new ArrayList<Lineup>();
+		try {
+			// TODO Move connectoin to its own class
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost/ffbp","ID","password");
+			Statement stmt = conn.createStatement();
+			String query;
+			ResultSet result;
+			if (userId != 0) {
+				query = String.format("SELECT * FROM lineups LEFT JOIN sites ON lineups.SITE=sites.SITE_ID WHERE lineups.USER_ID=(%1$d);",userId);
+				result = stmt.executeQuery(query);
+				if (result != null) {
+					while (result.next()) {
+						Lineup lineup = new Lineup(result);
+						rows.add(lineup);
+					}
+				}
+			}
+			
+			conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return rows;
+	}
+
+}

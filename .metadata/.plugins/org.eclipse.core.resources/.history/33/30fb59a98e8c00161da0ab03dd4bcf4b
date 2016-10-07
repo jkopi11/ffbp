@@ -1,0 +1,53 @@
+package com.kffb.analyzer.service;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+
+import javax.annotation.Resource;
+import javax.sql.DataSource;
+
+import org.json.JSONException;
+
+import com.kffb.analyzer.dto.Lineup;
+
+public class LineupService {
+	
+	@Resource(name="jdbc/ffbp")
+	private DataSource ds;
+
+	public LineupService() {
+		// TODO Auto-generated constructor stub
+		
+	}
+	
+	public ArrayList<Lineup> getLineups (int userId) {
+		Connection conn;
+		ArrayList<Lineup> rows = new ArrayList<Lineup>();
+		try {
+			conn = ds.getConnection();
+			Statement stmt = conn.createStatement();
+			String query;
+			ResultSet result;
+			if (userId != 0) {
+				query = String.format("SELECT * FROM lineups LEFT JOIN sites ON lineups.SITE=sites.SITE_ID WHERE lineups.USER_ID=(%1$d);",userId);
+				result = stmt.executeQuery(query);
+				if (result != null) {
+					while (result.next()) {
+						System.out.print(result.getString("SITE_NAME"));
+						Lineup lineup = new Lineup(result);
+						
+						rows.add(lineup);
+					}
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return rows;
+	}
+
+}

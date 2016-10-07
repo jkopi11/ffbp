@@ -1,19 +1,13 @@
 package com.kffb.analyzer.api;
 
-import com.kffb.analyzer.dto.Lineup;
-
-import java.awt.List;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 
 import javax.annotation.Resource;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -43,49 +37,15 @@ public class Lineups extends HttpServlet {
         super();
         // TODO Auto-generated constructor stub
     }
-    
-    /**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String userId = request.getParameter("userId");
-		
-		Connection conn;
-		try {
-			conn = ds.getConnection();
-			Statement stmt = conn.createStatement();
-			String query;
-			ResultSet result;
-			if (userId != null) {
-				query = String.format("SELECT * FROM lineups LEFT JOIN sites ON lineups.SITE=sites.SITE_ID WHERE lineups.USER_ID=(%1$s);",userId);
-				result = stmt.executeQuery(query);
-				if (result != null) {
-					ArrayList<Lineup> rows = new ArrayList<Lineup>();
-					while (result.next()) {
-						System.out.print(result.getString("SITE_NAME"));
-						Lineup lineup = new Lineup(result);
-						
-						rows.add(lineup);
-					}
-					request.setAttribute("rows", rows);
-					RequestDispatcher dispatcher = request.getRequestDispatcher("/templates/getLineups.jsp");
-					dispatcher.forward(request, response);
-				}
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		// will need to add logic to verify token is valid
 		//
 		// params - USER_ID (int), LINEUP_ID (int), PLAYERS (array of int)
+		// TODO -- Move to service/controller
 		try {
 			Connection conn = ds.getConnection();
 			conn.setAutoCommit(false);
