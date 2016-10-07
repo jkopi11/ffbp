@@ -1,0 +1,9 @@
+package com.kffb.analyzer.dto;
+
+public class Lineup {
+
+	public Lineup() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

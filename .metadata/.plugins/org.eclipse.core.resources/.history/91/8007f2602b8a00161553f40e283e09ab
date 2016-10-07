@@ -1,0 +1,81 @@
+var tab, currentPlayers, siteName, siteScoreFldName, fileName = 'espn_ffb.js', week,
+	tab_title = '',
+	projection = true,
+	enabledBtnCls = "btn btn-lg btn-primary btn-block",
+	disabledBtnCls = "btn btn-lg btn-primary btn-block disabled",
+	getRosterBtn = document.getElementById("getProjectionBtn"),
+	getScoresBtn = document.getElementById("getScoresBtn"),
+	loadRosterBtn = document.getElementById("loadProjectionBtn"),
+	loadScoresBtn = document.getElementById("loadScoresBtn"),
+	displayProjection = function (players){
+		currentPlayers = players[0];
+		loadRosterBtn.addEventListener('click',loadRosterFnc);
+		loadRosterBtn.className = enabledBtnCls;
+	},
+	displayScores = function (players) {
+		currentPlayers = players[0];
+		loadScoresBtn.addEventListener('click',loadScoresFnc);
+		loadScoresBtn.className = enabledBtnCls;
+	},
+	getRosterFnc = function(){
+		if (siteName == 'Y_ID') {
+			fileName = 'yahoo_ffb.js';
+			siteScoreFldName = 'Y_PROJ';
+		} else {
+			siteScoreFldName = 'ESPN_PROJ';
+		}
+		chrome.tabs.executeScript(tab.id, {
+			  file : fileName
+		  }, displayProjection);
+	},
+	getScoresFnc = function(){
+		if (siteName == 'Y_ID') {
+			fileName = 'yahoo_ffb.js';
+			siteScoreFldName = 'Y_PTS';
+		} else {
+			siteScoreFldName = 'ESPN_PTS';
+		}
+		chrome.tabs.executeScript(tab.id, {
+			  file : fileName
+		  }, displayScores);
+	},
+	loadRosterFnc = function(){
+		$.post( "http://localhost:8080/FFB_Analyzer/api/loadprojections", {
+			site : siteName,
+			week : $("#weekSelection option:selected").text(),
+			scoreType : siteScoreFldName,
+			projections : JSON.stringify(currentPlayers)
+		});
+	},
+	loadScoresFnc = function(){
+		$.post("http://localhost:8080/FFB_Analyzer/api/loadscores",{
+			site : siteName,
+			week : $("#weekSelection option:selected").text(),
+			scoreType : siteScoreFldName,
+			scores : JSON.stringify(currentPlayers)
+		});
+	};
+
+chrome.tabs.query({active: true}, function(tabs) {
+	tab = tabs[0];
+	tab_title = tab.title;
+	var espnHttpRgx = /^(http|https):\/\/games\.espn\.com\/ffl\/freeagency/,
+	    yahooHttpRgx = /^(http|https):\/\/football\.fantasysports\.yahoo\.com\/f1\/([0-9]{6,7})\/players/,
+		url = tab.url;
+	
+	if (espnHttpRgx.test(url)) {
+		siteName = 'ESPN_ID';
+		
+	} else if (yahooHttpRgx.test(url)){
+		siteName = 'Y_ID';
+	}
+	
+	if (siteName && typeof siteName !== 'undefined') {
+		getRosterBtn.addEventListener('click',getRosterFnc);
+		getScoresBtn.addEventListener('click',getScoresFnc);
+	} else {
+		getRosterBtn.className = disabledBtnCls;
+		getScoresBtn.className = disabledBtnCls;
+	}
+});
+

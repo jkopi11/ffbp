@@ -3,6 +3,8 @@ var players = [];
 function parseYahoo () {
 	var headerRow = document.querySelectorAll('div.players thead tr'),
     playerRows = document.querySelectorAll('div.players tbody tr'),
+    siteName = scriptOptions.siteName,
+    siteScoreFldName = scriptOptions.siteScoreFldName,
     columns = [],
     markup = '',
     playerObj, player, row, data,slot,playerName,projection,projNum,url;
@@ -12,7 +14,6 @@ function parseYahoo () {
 	for (var i = 0; i < headerRow.length; i++) {
 		columns.push(headerRow[i].innerText.trim());    
 	}
-	
 	for (var ii = 0; ii < playerRows.length; ii++) {
 		player = playerRows[ii];
 		playerObj = {};
@@ -22,8 +23,7 @@ function parseYahoo () {
 			playerName = playerName.querySelector('a.name');
 			if (playerName) {
 				url = playerName.href;
-				console.log(playerName.href,playerName.innerHTML);
-				playerObj['Y_ID'] = parseInt(url.substring(url.lastIndexOf('/')+1));
+				playerObj[siteName] = parseInt(url.substring(url.lastIndexOf('/')+1));
 				playerObj['NAME'] = playerName.innerHTML.replace("'","");
 			}
 		} else {
@@ -33,11 +33,10 @@ function parseYahoo () {
 		projection = row[columns.indexOf('Fan Pts')]; 
 		if (typeof projection !== "undefined") {
 			projNum = parseInt(projection.innerText.trim());
-			console.log(projNum);
 			if (projNum == null || typeof projNum === 'undefined' || isNaN(projNum)) {
 				projNum = 0;
 			}
-			playerObj['Y_PROJ'] = projNum; 
+			playerObj[siteScoreFldName] = projNum; 
 		} else {
 			continue;
 		}

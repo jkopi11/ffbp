@@ -7,7 +7,7 @@ CREATE PROCEDURE updatePlayers (IN pID INT, IN playerName VARCHAR(255), IN siteI
 		/* Updating a score that already has a projection */
 		IF EXISTS (SELECT players.P_ID FROM players LEFT JOIN projections ON players.P_ID=projections.P_ID WHERE (players.Y_ID=pID OR players.ESPN_ID=pID OR players.CBS_ID=pID) AND players.PNAME=playerName AND projections.WEEK=playerWeek) THEN
 			INSERT INTO logs (log) VALUES ('SCENARIO 1');
-			SET @usql = CONCAT('UPDATE players LEFT JOIN projections ON players.P_ID=projections.P_ID SET projections.',siteScore,'=',score,' WHERE players.',siteId,'=',pID,' AND projections.WEEK = ',playerWeek,';');
+			SET @usql = CONCAT('UPDATE players LEFT JOIN scores ON players.P_ID=scores.P_ID SET scores.',siteScore,'=',score,' WHERE players.',siteId,'=',pID,' AND scores.WEEK = ',playerWeek,';');
 			INSERT INTO logs (log) VALUES (@nsql);
 			PREPARE stmt FROM @usql;
 			EXECUTE stmt;

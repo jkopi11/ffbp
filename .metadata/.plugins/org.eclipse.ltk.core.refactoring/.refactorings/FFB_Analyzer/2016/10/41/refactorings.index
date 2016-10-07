@@ -1,0 +1,7 @@
+1475807401578	Rename type 'lineups'
+1475808440099	Delete element
+1475810498899	Encapsulate field 'teamName'
+1475810504869	Encapsulate field 'siteName'
+1475810510302	Encapsulate field 'projectedScore'
+1475810521260	Encapsulate field 'userId'
+1475810526624	Encapsulate field 'lineupId'
